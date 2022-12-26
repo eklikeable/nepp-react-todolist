@@ -1,8 +1,20 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useTodoDispatch } from '../contexts/todos';
 
-function TodoCreate({ todos, input, setInput, onCreate }) {
-  console.log(todos);
+function TodoCreate() {
+  const dispatch = useTodoDispatch();
+  const nextId = useRef(3);
+
+  const [input, setInput] = useState('');
+
+  const onCreate = (e) => {
+    e.preventDefault();
+    dispatch({ type: 'CREATE_TODO', text: input, id: nextId.current });
+    setInput('');
+    nextId.current++;
+  };
+
   return (
     <FormBox>
       <form>

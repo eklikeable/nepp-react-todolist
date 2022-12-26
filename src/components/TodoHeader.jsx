@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTodoState } from '../contexts/todos';
 
-function TodoHeader({ todos }) {
+function TodoHeader() {
+  const state = useTodoState();
   const date = new Date().toLocaleDateString('ko-KR', {
     dateStyle: 'full',
   });
 
-  const doneCount = todos.filter((todo) => todo.done === true).length;
-  const progress = doneCount ? Math.round((doneCount / todos.length) * 100) : 0;
+  const doneCount = state.filter((todo) => todo.done === true).length;
+  const progress = doneCount ? Math.round((doneCount / state.length) * 100) : 0;
 
   return (
     <HeaderBox>

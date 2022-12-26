@@ -1,24 +1,24 @@
 import React from 'react';
 import { BsCheckCircle, BsFillTrashFill } from 'react-icons/bs';
 import styled from 'styled-components';
+import { useTodoDispatch } from '../contexts/todos';
 
-function TodoItem({ todo, onRemove, onToggle }) {
+function TodoItem({ todo }) {
+  const dispatch = useTodoDispatch();
+  const { id, text, done } = todo;
+
+  function handleRemove() {
+    dispatch({ type: 'REMOVE_TODO', id });
+  }
+  function handleToggle() {
+    dispatch({ type: 'TOGGLE_TODO', id });
+  }
+
   return (
-    <TodoItemBox>
-      <CheckBox onClick={() => onToggle(todo.id)}>
-        <BsCheckCircle
-          style={{
-            backgroundColor: todo.done && 'dodgerblue',
-            borderRadius: '50%',
-          }}
-        />
-      </CheckBox>
-      <span style={{ textDecoration: todo.done && 'line-through' }}>
-        {todo.text}
-      </span>
-      <TrashBox onClick={() => onRemove(todo.id)}>
-        <BsFillTrashFill />
-      </TrashBox>
+    <TodoItemBox $done={done}>
+      <CheckBox $done={done} onClick={handleToggle} />
+      <span>{text}</span>
+      <TrashBox onClick={handleRemove} />
     </TodoItemBox>
   );
 }
@@ -36,14 +36,17 @@ const TodoItemBox = styled.div`
   span {
     width: 250px;
     text-align: left;
+    text-decoration: ${(props) => props.$done && 'line-through'};
   }
 `;
 
-const CheckBox = styled.div`
+const CheckBox = styled(BsCheckCircle)`
   cursor: pointer;
+  border-radius: 50%;
+  background-color: ${(props) => props.$done && 'dodgerblue'};
 `;
 
-const TrashBox = styled.div`
+const TrashBox = styled(BsFillTrashFill)`
   cursor: pointer;
   &:hover {
     color: red;

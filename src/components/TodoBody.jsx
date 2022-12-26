@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import TodoItem from '../components/TodoItem';
-function TodoBody({ todos, onRemove, onToggle }) {
+import { useTodoState } from '../contexts/todos';
+
+function TodoBody() {
+  const state = useTodoState();
+
   return (
     <BodyBox>
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onToggle={onToggle}
-          onRemove={onRemove}
-        />
+      {state.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </BodyBox>
   );
